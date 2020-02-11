@@ -16,12 +16,26 @@ import android.widget.EditText;
 
 import com.biblestudy.R;
 import com.biblestudy.RegisterActivity;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonElement;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import interfaces.UniversityService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import utilities.RetrofitClientInstance;
 
 
 /**
@@ -30,6 +44,16 @@ import java.util.ArrayList;
 public class SchoolFragment extends Fragment implements BlockingStep {
     MaterialSpinner university,campus,school,course,hostel;
     EditText input_hostel_no;
+
+    public ArrayList<String> universities = new ArrayList<>();
+    public Map<Integer, JSONArray> all_campuses = new HashMap<Integer, JSONArray>();
+    public Map<Integer, Map<String, JSONArray>> all_schools = new HashMap<Integer, Map<String, JSONArray>>();
+    public Map<String,Map<String,JSONArray>> courses = new HashMap<>();
+
+
+    ArrayList<String> my_campuses = new ArrayList<>();
+    ArrayList<String> my_schools = new ArrayList<>();
+    ArrayList<String> my_courses = new ArrayList<>();
 
     public SchoolFragment() {
         // Required empty public constructor
@@ -49,14 +73,87 @@ public class SchoolFragment extends Fragment implements BlockingStep {
 
         input_hostel_no = root.findViewById(R.id.input_hostel_no);
 
+        UniversityService service = RetrofitClientInstance.getRetrofitInstance().create(UniversityService.class);
+        Call<JsonElement> call = service.getUniversityResponse();
 
-        RegisterActivity registerActivity = (RegisterActivity) getActivity();
-        ArrayList<String> university_data = registerActivity.getUniversities();
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                //Log.d("universities",response.body().toString());
 
-        Log.d("university_size",String.valueOf(university_data.size()));
-        if (university_data != null){
-            university.setItems(university_data);
-        }
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response.body().toString());
+
+                    JSONArray jsonArray = jsonObject.getJSONArray("message");
+
+                    for (int i=0;i<jsonArray.length();i++){
+                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                        //Log.d("msg",jsonObject1.getString("id"));
+                        JSONArray campuses = jsonObject1.getJSONArray("campus");
+
+                        Log.d("=====university",jsonObject1.getString("name"));
+
+                        universities.add(jsonObject1.getString("name"));
+
+                        //get campuses
+                        if (campuses.length()>0){
+                            //get campuses
+                            for (int j=0;j<campuses.length();j++){
+                                //get schools
+                                JSONObject campusObject = campuses.getJSONObject(j);
+                                Log.d("=================campus",campusObject.getString("name"));
+
+                                JSONArray schools = campusObject.getJSONArray("schools");
+
+                                all_campuses.put(j,schools);
+                                my_campuses.add(campusObject.getString("name"));
+
+                                Map<String,JSONArray> scl = new HashMap<>();
+                                for (int z=0;z<schools.length();z++){
+                                    //get courses
+                                    JSONObject courseObject = schools.getJSONObject(z);
+                                    Log.d("=============school",courseObject.getString("name"));
+
+                                    JSONArray courses = courseObject.getJSONArray("courses");
+                                    scl.put(campusObject.getString("name"),schools);
+                                    all_schools.put(z,scl);
+                                    my_schools.add(courseObject.getString("name"));
+                                    for (int y=0;y<courses.length();y++){
+                                        JSONObject courseArr = courses.getJSONObject(y);
+                                        Log.d("======courses",courseArr.getString("name"));
+                                        my_courses.add(courseArr.getString("name"));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                    university.setItems(universities);
+                    campus.setItems(my_campuses);
+                    school.setItems(my_schools);
+                    course.setItems(my_courses);
+
+                    Log.d("all_university_size", String.valueOf(universities.size()));
+                    Log.d("all_campuses_size",String.valueOf(all_campuses.size()));
+                    Log.d("all_schools_size",String.valueOf(all_schools.size()));
+
+                    //JSONArray aasas = all_campuses.get("Moi University");
+                    //Log.d("aasas", String.valueOf(aasas.length()));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("massage",e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Log.d("university",t.getMessage());
+            }
+        });
+
 
         return root;
     }
@@ -68,7 +165,19 @@ public class SchoolFragment extends Fragment implements BlockingStep {
         RegisterActivity registerActivity = (RegisterActivity) getActivity();
         ArrayList<String> university_data = registerActivity.getUniversities();
 
-        Log.d("university_size",String.valueOf(university_data.size()));
+        Log.d("unisize", String.valueOf(university_data.size()));
+
+//        if (university_data!= null){
+//            //university.setItems(university_data);
+//        }
+        //university.setItems(university_data);
+//        university.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+//
+//            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+//                //Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+//            }
+//        });
+
     }
 
     @Nullable
