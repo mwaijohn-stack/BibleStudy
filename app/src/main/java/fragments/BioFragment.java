@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.biblestudy.R;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -31,8 +32,18 @@ public class BioFragment extends Fragment implements BlockingStep {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bio, container, false);
+
+        View root = inflater.inflate(R.layout.fragment_bio, container, false);
+        MaterialSpinner spinner = (MaterialSpinner) root.findViewById(R.id.spinner);
+        spinner.setItems("Male","Female");
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                //Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+        return root;
     }
 
     @Nullable
@@ -63,6 +74,5 @@ public class BioFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-
     }
 }

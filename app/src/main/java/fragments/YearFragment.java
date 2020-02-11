@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.biblestudy.R;
+import com.biblestudy.RegisterActivity;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -32,8 +33,10 @@ public class YearFragment extends Fragment implements BlockingStep {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_year, container, false);
+        View root = inflater.inflate(R.layout.fragment_year, container, false);
+
+
+        return root;
     }
 
     @Nullable
@@ -65,6 +68,6 @@ public class YearFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-
+        callback.goToPrevStep();
     }
 }

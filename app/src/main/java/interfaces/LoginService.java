@@ -10,10 +10,6 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
-       // @POST("login")
-        //Call<User> getLoginResponse(@Body LoginRequest loginRequest);
-
-
-        @POST("login")
+        @POST("student/login")
         Call<JsonElement> getLoginResponse(@Body LoginRequest loginRequest);
 }

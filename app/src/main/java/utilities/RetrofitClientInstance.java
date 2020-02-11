@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://bible.wasiliana.co.ke/student/";
+    private static final String BASE_URL = "https://bible.wasiliana.co.ke/";
 
     public static Retrofit getRetrofitInstance() {
 
