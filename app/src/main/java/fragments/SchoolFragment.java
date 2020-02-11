@@ -16,7 +16,6 @@ import android.widget.EditText;
 
 import com.biblestudy.R;
 import com.biblestudy.RegisterActivity;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.stepstone.stepper.BlockingStep;
@@ -30,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import interfaces.UniversityService;
 import retrofit2.Call;
@@ -51,6 +51,9 @@ public class SchoolFragment extends Fragment implements BlockingStep {
     public Map<String,Map<String,JSONArray>> courses = new HashMap<>();
 
 
+    TreeMap<String, ArrayList<String>> kk;
+
+
     ArrayList<String> my_campuses = new ArrayList<>();
     ArrayList<String> my_schools = new ArrayList<>();
     ArrayList<String> my_courses = new ArrayList<>();
@@ -64,6 +67,7 @@ public class SchoolFragment extends Fragment implements BlockingStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_school, container, false);
+
 
         university =  root.findViewById(R.id.university);
         campus =  root.findViewById(R.id.campus);
@@ -89,6 +93,7 @@ public class SchoolFragment extends Fragment implements BlockingStep {
 
                     for (int i=0;i<jsonArray.length();i++){
                         JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                        String university_id = jsonObject1.getString("id");
                         //Log.d("msg",jsonObject1.getString("id"));
                         JSONArray campuses = jsonObject1.getJSONArray("campus");
 
@@ -103,11 +108,12 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                 //get schools
                                 JSONObject campusObject = campuses.getJSONObject(j);
                                 Log.d("=================campus",campusObject.getString("name"));
+                                String campus_id = campusObject.getString("id");
 
                                 JSONArray schools = campusObject.getJSONArray("schools");
 
                                 all_campuses.put(j,schools);
-                                my_campuses.add(campusObject.getString("name"));
+                                my_campuses.add(university_id +"_"+ campusObject.getString("name"));
 
                                 Map<String,JSONArray> scl = new HashMap<>();
                                 for (int z=0;z<schools.length();z++){
@@ -118,7 +124,8 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                     JSONArray courses = courseObject.getJSONArray("courses");
                                     scl.put(campusObject.getString("name"),schools);
                                     all_schools.put(z,scl);
-                                    my_schools.add(courseObject.getString("name"));
+                                    my_schools.add(university_id +"_" + campus_id +"_" + courseObject.getString("name"));
+
                                     for (int y=0;y<courses.length();y++){
                                         JSONObject courseArr = courses.getJSONObject(y);
                                         Log.d("======courses",courseArr.getString("name"));
@@ -128,7 +135,6 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                             }
                         }
                     }
-
 
                     university.setItems(universities);
                     campus.setItems(my_campuses);
@@ -153,7 +159,6 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                 Log.d("university",t.getMessage());
             }
         });
-
 
         return root;
     }
