@@ -36,10 +36,6 @@ public class RegisterActivity extends AppCompatActivity implements SchoolData {
 
         mStepperLayout =  findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(), this));
-
-
-
-
     }
 
     @Override
