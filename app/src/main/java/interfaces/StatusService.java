@@ -2,17 +2,14 @@ package interfaces;
 
 import com.google.gson.JsonElement;
 
-import models.LoginRequest;
+import models.StatusRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
+
 import retrofit2.http.POST;
 
-public interface MembersService {
+public interface StatusService {
 
-    @FormUrlEncoded
-    @POST("hostel/all")
-    Call<JsonElement> getHostelsResponse(@Field("id") String id);
+    @POST("status/members")
+    Call<JsonElement> getStatusResponse(@Body StatusRequest statusRequest);
 }

@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import utilities.RetrofitClientInstance;
+import utilities.SharedPref;
 import utilities.Utils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_login  = findViewById(R.id.btn_login);
 
         btn_login.setOnClickListener(this);
+
+        SharedPref.init(this);
 
     }
 
@@ -68,12 +71,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(jsonObject.has("message")){
                             Toast.makeText(MainActivity.this, "has massage", Toast.LENGTH_SHORT).show();
                             Toast.makeText(MainActivity.this, jsonObject2.getString("first_name"), Toast.LENGTH_SHORT).show();
+
+                            SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
                         }else {
                             Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                         }
 
                         Toast.makeText(MainActivity.this, "LOGGED IN!!!!",Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+                        startActivity(new Intent(MainActivity.this, GroupMembers.class));
                     }
                     progress.dismiss();
                 } catch (JSONException e) {

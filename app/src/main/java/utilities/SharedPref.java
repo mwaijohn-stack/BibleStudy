@@ -22,6 +22,8 @@ public class SharedPref
     public static final String YEAR_OF_STUDY = "YEAR_OF_STUDY";
     public static final String COUNTY_ID = "COUNTY_ID";
 
+    public static final String STUDENT_ID = "STUDENT_ID";
+
     private SharedPref()
     {
 

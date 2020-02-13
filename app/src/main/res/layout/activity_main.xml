@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
                     android:hint="Enter phone number"
-                    android:text="254728433879"/>
+                    android:text="254710883976"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Email Label -->
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:text="CD/19/12"
+                    android:text="CD/19/22"
                     android:hint="Enter registration no." />
             </com.google.android.material.textfield.TextInputLayout>
 
