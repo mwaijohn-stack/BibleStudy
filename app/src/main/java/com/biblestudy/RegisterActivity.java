@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import utilities.RetrofitClientInstance;
+import utilities.SharedPref;
 
 public class RegisterActivity extends AppCompatActivity implements SchoolData {
     private StepperLayout mStepperLayout;
@@ -36,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity implements SchoolData {
 
         mStepperLayout =  findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(), this));
+
+        SharedPref.init(getApplicationContext());
     }
 
     @Override

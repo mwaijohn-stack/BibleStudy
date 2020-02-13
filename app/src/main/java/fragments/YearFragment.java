@@ -2,6 +2,7 @@ package fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,10 +31,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import interfaces.CountyService;
+import interfaces.RegisterService;
+import models.Registration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import utilities.RetrofitClientInstance;
+import utilities.SharedPref;
 
 
 /**
@@ -43,6 +47,8 @@ public class YearFragment extends Fragment implements BlockingStep {
 
     HashMap<Integer,String> counties_map = new HashMap<>();
     MaterialSpinner counties_spinner,year_spinner;
+    SharedPreferences.Editor editor;
+
 
     public YearFragment() {
         // Required empty public constructor
@@ -56,8 +62,16 @@ public class YearFragment extends Fragment implements BlockingStep {
 
         counties_spinner = root.findViewById(R.id.county);
         year_spinner = root.findViewById(R.id.year);
+        String[] year = {"1","2","3","4","5","6"};
+        year_spinner.setItems(year);
 
-        year_spinner.setItems(1,2,3,4,5,6);
+        year_spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                SharedPref.write(SharedPref.YEAR_OF_STUDY,String.valueOf(year[position]));
+            }
+        });
+
 
         CountyService service = RetrofitClientInstance.getRetrofitInstance().create(CountyService.class);
         Call<JsonElement> call = service.getCountyResponse();
@@ -84,6 +98,20 @@ public class YearFragment extends Fragment implements BlockingStep {
                         Log.d("added",pair.getValue());
                     }
                     counties_spinner.setItems(data);
+                    counties_spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                            try {
+                                JSONObject county_object = counties.getJSONObject(position);
+                                SharedPref.write(SharedPref.COUNTY_ID,county_object.getString("id"));
+//                                editor.putString(SharedPref.COUNTY_ID,county_object.getString("id"));
+//                                editor.apply();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -129,8 +157,53 @@ public class YearFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+
+        //callback.complete();
+
+        String first_name = SharedPref.read(SharedPref.FIRST_NAME,null);
+        String middle_name = SharedPref.read(SharedPref.SECOND_NAME,null);
+        String last_name = SharedPref.read(SharedPref.LAST_NAME,null);
+        String registration_no = SharedPref.read(SharedPref.REG_NUMBER,null);
+        String msisdn = SharedPref.read(SharedPref.PHONE_NUMBER,null);
+        String gender = SharedPref.read(SharedPref.GENDER,null);
+        String university_id = SharedPref.read(SharedPref.UNIVERSITY_ID,null);
+        String campus_id = SharedPref.read(SharedPref.CAMPUS_ID,null);
+        String school_id = SharedPref.read(SharedPref.SCHOOL_ID,null);
+        String course_id = SharedPref.read(SharedPref.COURSE_ID,null);
+        String hostel_id = SharedPref.read(SharedPref.HOSTEL_ID,null);
+        String room_no = SharedPref.read(SharedPref.ROOM_NUMBER,null);
+        String year_of_study = SharedPref.read(SharedPref.YEAR_OF_STUDY,null);
+        String county_id = SharedPref.read(SharedPref.COUNTY_ID,null);
+
+
+        Log.d("first_name",first_name +"=" + middle_name +"=" + last_name +"=" +
+                registration_no +"=" + msisdn +"=" + gender +"=" + county_id +"=" +year_of_study);
+
+        Registration registration = new Registration(first_name,middle_name,last_name,
+                msisdn,gender,county_id,campus_id,registration_no,
+                course_id,hostel_id,"zone",
+                "hostel name",room_no,"2",year_of_study);
+
+        RegisterService service = RetrofitClientInstance.getRetrofitInstance().create(RegisterService.class);
+        Call<JsonElement> call = service.registerStudent(registration);
+
+
         Log.d("completed","year fragment complete");
-        callback.complete();
+
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                if (response.isSuccessful()){
+                    Log.d("registration",response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Log.d("registration",t.getMessage());
+            }
+        });
+
     }
 
     @Override

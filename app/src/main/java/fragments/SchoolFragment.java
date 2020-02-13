@@ -2,6 +2,7 @@ package fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.biblestudy.R;
 import com.biblestudy.RegisterActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.stepstone.stepper.BlockingStep;
@@ -30,13 +32,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
+import interfaces.HostelService;
 import interfaces.UniversityService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import utilities.RetrofitClientInstance;
+import utilities.SharedPref;
 
 
 /**
@@ -45,6 +48,7 @@ import utilities.RetrofitClientInstance;
 public class SchoolFragment extends Fragment implements BlockingStep {
     MaterialSpinner university,campus,school,course,hostel;
     EditText input_hostel_no;
+    SharedPreferences.Editor editor;
 
     public ArrayList<String> universities = new ArrayList<>();
     public Map<Integer, JSONArray> all_campuses = new HashMap<Integer, JSONArray>();
@@ -53,6 +57,13 @@ public class SchoolFragment extends Fragment implements BlockingStep {
     ArrayList<String> my_campuses = new ArrayList<>();
     ArrayList<String> my_schools = new ArrayList<>();
     ArrayList<String> my_courses = new ArrayList<>();
+
+
+
+    final String[] university_id = new String[1];
+    final String[] campus_id = new String[1];
+    final String[] school_id = new String[1];
+    final String[] course_id = new String[1];
 
     public SchoolFragment() {
         // Required empty public constructor
@@ -71,6 +82,7 @@ public class SchoolFragment extends Fragment implements BlockingStep {
         school =  root.findViewById(R.id.school);
         hostel =  root.findViewById(R.id.hostel);
 
+
         input_hostel_no = root.findViewById(R.id.input_hostel_no);
 
         UniversityService service = RetrofitClientInstance.getRetrofitInstance().create(UniversityService.class);
@@ -81,8 +93,6 @@ public class SchoolFragment extends Fragment implements BlockingStep {
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                //Log.d("universities",response.body().toString());
-
 
                 try {
                     jsonObject[0] = new JSONObject(response.body().toString());
@@ -91,60 +101,17 @@ public class SchoolFragment extends Fragment implements BlockingStep {
 
                     for (int i = 0; i< jsonArray[0].length(); i++){
                         JSONObject jsonObject1 = jsonArray[0].getJSONObject(i);
-                        String university_id = jsonObject1.getString("id");
-                        //Log.d("msg",jsonObject1.getString("id"));
-                        JSONArray campuses = jsonObject1.getJSONArray("campus");
 
                         Log.d("=====university",jsonObject1.getString("name"));
 
                         universities.add(jsonObject1.getString("name"));
-
-                        //get campuses
-//                        if (campuses.length()>0){
-//                            //get campuses
-//                            for (int j=0;j<campuses.length();j++){
-//                                //get schools
-//                                JSONObject campusObject = campuses.getJSONObject(j);
-//                                Log.d("=================campus",campusObject.getString("name"));
-//                                String campus_id = campusObject.getString("id");
-//
-//                                JSONArray schools = campusObject.getJSONArray("schools");
-//
-//                                all_campuses.put(j,schools);
-//                                my_campuses.add(university_id +"_"+ campusObject.getString("name"));
-//
-//                                Map<String,JSONArray> scl = new HashMap<>();
-//                                for (int z=0;z<schools.length();z++){
-//                                    //get courses
-//                                    JSONObject courseObject = schools.getJSONObject(z);
-//                                    Log.d("=============school",courseObject.getString("name"));
-//
-//                                    JSONArray courses = courseObject.getJSONArray("courses");
-//                                    scl.put(campusObject.getString("name"),schools);
-//                                    all_schools.put(z,scl);
-//                                    my_schools.add(university_id +"_" + campus_id +"_" + courseObject.getString("name"));
-//
-//                                    for (int y=0;y<courses.length();y++){
-//                                        JSONObject courseArr = courses.getJSONObject(y);
-//                                        Log.d("======courses",courseArr.getString("name"));
-//                                        my_courses.add(courseArr.getString("name"));
-//                                    }
-//                                }
-//                            }
-//                        }
                     }
 
                     university.setItems(universities);
-                    //campus.setItems(my_campuses);
-                    //school.setItems(my_schools);
-                    //course.setItems(my_courses);
 
                     Log.d("all_university_size", String.valueOf(universities.size()));
                     Log.d("all_campuses_size",String.valueOf(all_campuses.size()));
                     Log.d("all_schools_size",String.valueOf(all_schools.size()));
-
-                    //JSONArray aasas = all_campuses.get("Moi University");
-                    //Log.d("aasas", String.valueOf(aasas.length()));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -170,8 +137,12 @@ public class SchoolFragment extends Fragment implements BlockingStep {
 
                     JSONObject university_objects = jsonArray[0].getJSONObject(position);
 
+                    university_id[0] = university_objects.getString("id");
+                    Log.d("university_id", university_id[0]);
+
                     JSONArray campuses = university_objects.getJSONArray("campus");
                     Log.d("campuses__",String.valueOf(campuses.length()));
+
 
 
                     for (int i=0;i<campuses.length();i++){
@@ -198,6 +169,49 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                             Log.d("kjkj","kjkjk");
                             try {
                                 JSONObject schools_objects = campuses.getJSONObject(position);
+
+                                campus_id[0] = schools_objects.getString("id");
+                                Log.d("campus_id", campus_id[0]);
+
+
+                                HostelService service = RetrofitClientInstance.getRetrofitInstance().create(HostelService.class);
+                                Call<JsonElement> call = service.getHostelsResponse(campus_id[0]);
+                                call.enqueue(new Callback<JsonElement>() {
+                                    @Override
+                                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                                        try {
+                                            JSONObject hostel_response = new JSONObject(response.body().toString());
+                                            Log.d("hostels_res",hostel_response.toString());
+                                            JSONArray hostel_array = hostel_response.getJSONArray("message");
+
+                                            if (hostel_array.length()>0){
+                                              Log.d("hostels", String.valueOf(hostel_array.length()));
+
+                                              ArrayList<String> hostel_name = new ArrayList<>();
+                                              for (int i=0;i<hostel_array.length();i++){
+                                                  JSONObject jsonObject1 = hostel_array.getJSONObject(i);
+                                                  hostel_name.add(jsonObject1.getString("name"));
+                                              }
+                                              String[] arr = hostel_name.toArray(new String[hostel_name.size()]);
+                                              hostel.setItems(arr);
+                                            }else {
+                                                Log.d("hostels","no hostels");
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Log.d("hostels",e.getMessage());
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                                    }
+                                });
+
+
+
                                 JSONArray schools_array = schools_objects.getJSONArray("schools");
 
                                 Log.d("schools_size", String.valueOf(schools_array.length()));
@@ -223,6 +237,9 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                             //JSONObject schools_objects = campuses.getJSONObject(position);
                                             JSONObject courses_object = schools_array.getJSONObject(position);
 
+                                            school_id[0] = courses_object.getString("id");
+                                            Log.d("school_id", school_id[0]);
+
                                             JSONArray courses_array = courses_object.getJSONArray("courses");
 
                                             for (int j=0;j<courses_array.length();j++){
@@ -237,6 +254,21 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                                 @Override
                                                 public void run() {
                                                     course.setItems(arr);
+                                                }
+                                            });
+
+                                            course.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                                                    try {
+                                                        JSONObject courses = courses_array.getJSONObject(position);
+                                                        course_id[0] = courses.getString("id");
+
+                                                        Log.d("course_id", course_id[0]);
+
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                 }
                                             });
                                         } catch (JSONException e) {
@@ -296,7 +328,30 @@ public class SchoolFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
-        callback.goToNextStep();
+
+        if (university_id[0] == null || campus_id[0] == null
+                || school_id[0] == null || course_id[0] == null
+        || input_hostel_no.getText().toString().isEmpty()){
+            Snackbar.make(getView(),"Enter all fields",Snackbar.LENGTH_SHORT).show();
+
+            callback.goToNextStep();
+
+        }else {
+
+            SharedPref.write(SharedPref.UNIVERSITY_ID,university_id[0]);
+            //Log.d("prefs", SharedPref.read(SharedPref.UNIVERSITY_ID,"no value"));
+
+            SharedPref.write(SharedPref.CAMPUS_ID,campus_id[0]);
+            SharedPref.write(SharedPref.SCHOOL_ID,school_id[0]);
+
+            SharedPref.write(SharedPref.COURSE_ID,course_id[0]);
+            SharedPref.write(SharedPref.HOSTEL_ID,String.valueOf(2));
+            SharedPref.write(SharedPref.ROOM_NUMBER,input_hostel_no.getText().toString());
+
+            callback.goToNextStep();
+
+        }
+
     }
 
     @Override
