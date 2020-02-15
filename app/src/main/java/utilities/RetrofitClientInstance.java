@@ -12,10 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://bible.wasiliana.co.ke/student/";
+//    private static final String BASE_URL = "https://bible.wasiliana.co.ke/";
+   //private static final String BASE_URL = "http://192.168.1.250/bible-study-api/";
+    private static final String BASE_URL = "http://192.168.42.94/bible-study-api/";
 
+    //private static final String BASE_URL = "http:///10.0.2.2/";
+//192.168.42.94
     public static Retrofit getRetrofitInstance() {
-
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
