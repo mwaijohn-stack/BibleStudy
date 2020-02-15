@@ -5,9 +5,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -18,31 +22,39 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import adapters.MembersAdapter;
-import interfaces.LoginService;
 import interfaces.StatusService;
 import models.GroupMember;
-import models.LoginRequest;
 import models.StatusRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import utilities.RetrofitClientInstance;
 import utilities.SharedPref;
+import utilities.SimpleDividerItemDecoration;
 
-public class GroupMembers extends AppCompatActivity {
+public class GroupMembersActivity extends AppCompatActivity {
 
+    public static List<GroupMember> new_list = new ArrayList<>();
+
+    public  static FloatingActionButton create_attendance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_members);
 
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        create_attendance = findViewById(R.id.create_attendance);
+        setTitle("Group " + SharedPref.read(SharedPref.GROUP_NAME,"") + " Members");
+
         StatusRequest statusRequest = new StatusRequest(SharedPref.read(SharedPref.STUDENT_ID,"0"));
         StatusService service = RetrofitClientInstance.getRetrofitInstance().create(StatusService.class);
         Call<JsonElement> call = service.getStatusResponse(statusRequest);
-
 
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -61,7 +73,7 @@ public class GroupMembers extends AppCompatActivity {
 
                     Type listType = new TypeToken<List<GroupMember>>(){}.getType();
                     List<GroupMember> list = new ArrayList<>();
-                    List<GroupMember> new_list = new ArrayList<>();
+                    new_list = new ArrayList<>();
 
                     list = gson.fromJson(String.valueOf(jsonArray), listType);
 
@@ -76,6 +88,7 @@ public class GroupMembers extends AppCompatActivity {
 
                     RecyclerView recyclerView =  findViewById(R.id.recycler_view);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(membersAdapter);
@@ -93,5 +106,10 @@ public class GroupMembers extends AppCompatActivity {
              Log.d("success",t.getMessage());
             }
         });
+    }
+
+    public void createAttendance(View view){
+        //Snackbar.make(view,"Create attendance",Snackbar.LENGTH_SHORT).show();
+        startActivity(new Intent(this,AttendanceActivity.class));
     }
 }

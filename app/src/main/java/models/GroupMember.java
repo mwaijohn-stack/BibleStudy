@@ -4,8 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class GroupMember {
-
+public class GroupMember{
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("first_name")
     @Expose
     private String firstName;
@@ -36,16 +38,46 @@ public class GroupMember {
     @SerializedName("course_id")
     @Expose
     private String courseId;
-    @SerializedName("name")
+    @SerializedName("county")
     @Expose
-    private String name;
+    private String county;
+    @SerializedName("groupname")
+    @Expose
+    private String groupName;
+    @SerializedName("role")
+    @Expose
+    private String role;
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    //student id
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
     }
 
     public String getFirstName() {

@@ -21,6 +21,9 @@ public class SharedPref
     public static final String ROOM_NUMBER = "ROOM_NUMBER";
     public static final String YEAR_OF_STUDY = "YEAR_OF_STUDY";
     public static final String COUNTY_ID = "COUNTY_ID";
+    public static final String GROUP_NAME = "GROUP_NAME";
+    //IF USER IS A GROUP LEADER
+    public static final String USER_ROLE = "USER_ROLE";
 
     public static final String STUDENT_ID = "STUDENT_ID";
 

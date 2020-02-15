@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText phone_no,reg_no;
     AppCompatButton btn_login;
+    TextView register_link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         phone_no = findViewById(R.id.phone_no);
         reg_no = findViewById(R.id.reg_no);
         btn_login  = findViewById(R.id.btn_login);
+
+        register_link = findViewById(R.id.link_register);
 
         btn_login.setOnClickListener(this);
 
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
 
                         Toast.makeText(MainActivity.this, "LOGGED IN!!!!",Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(MainActivity.this, GroupMembers.class));
+                        startActivity(new Intent(MainActivity.this, GroupMembersActivity.class));
                     }
                     progress.dismiss();
                 } catch (JSONException e) {
@@ -107,5 +111,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else {
             login(phone,reg);
         }
+    }
+
+    public void registerLink(View view){
+        startActivity(new Intent(this,RegisterActivity.class));
     }
 }

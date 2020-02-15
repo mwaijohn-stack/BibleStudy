@@ -241,7 +241,7 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                             Log.d("school_id", school_id[0]);
 
                                             JSONArray courses_array = courses_object.getJSONArray("courses");
-
+                                            Log.d("courses_arr", String.valueOf(courses_array.length()));
                                             for (int j=0;j<courses_array.length();j++){
                                                 JSONObject course_object = courses_array.getJSONObject(j);
                                                 my_courses.add(course_object.getString("name"));
@@ -249,6 +249,8 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                             Log.d("courses_size", String.valueOf(schools_array.length()));
 
                                             String[] arr = my_courses.toArray(new String[my_courses.size()]);
+
+                                            Log.d("arr_size", String.valueOf(arr.length));
 
                                             course.post(new Runnable() {
                                                 @Override
@@ -333,9 +335,6 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                 || school_id[0] == null || course_id[0] == null
         || input_hostel_no.getText().toString().isEmpty()){
             Snackbar.make(getView(),"Enter all fields",Snackbar.LENGTH_SHORT).show();
-
-            callback.goToNextStep();
-
         }else {
 
             SharedPref.write(SharedPref.UNIVERSITY_ID,university_id[0]);
