@@ -22,6 +22,7 @@
     android:layout_gravity="bottom|right"
     android:onClick="createAttendance"
     android:layout_margin="16dp"
+    android:visibility="gone"
     android:tooltipText="+"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

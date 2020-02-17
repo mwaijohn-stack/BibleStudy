@@ -196,6 +196,7 @@ public class YearFragment extends Fragment implements BlockingStep {
                 if (response.isSuccessful()){
                     Log.d("registration",response.body().toString());
                 }
+                Log.d("registration", String.valueOf(response.code()));
             }
 
             @Override

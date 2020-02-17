@@ -73,8 +73,5 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
                         .create();
         }
         return null;
-//        return new StepViewModel.Builder(context)
-//                .setTitle("kkjkj") //can be a CharSequence instead
-//                .create();
     }
 }

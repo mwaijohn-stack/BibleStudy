@@ -50,13 +50,15 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
 
 
         String user_id = SharedPref.read(SharedPref.STUDENT_ID,"0");
+        Log.d("user_id",user_id);
+        Log.d("user_id_",item.getId());
 
         if (user_id.equals(item.getId())){
             if (item.getRole().equals("1")){
                 create_attendance.setVisibility(View.VISIBLE);
             }
         }else {
-            create_attendance.setVisibility(View.GONE);
+            //create_attendance.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(item.getRole())== 1){

@@ -44,6 +44,10 @@ public class GroupMember{
     @SerializedName("groupname")
     @Expose
     private String groupName;
+    @SerializedName("grouping_processor_id")
+    @Expose
+    private  String groupingProcessorId;
+
     @SerializedName("role")
     @Expose
     private String role;
@@ -160,4 +164,11 @@ public class GroupMember{
         this.courseId = courseId;
     }
 
+    public String getGroupingProcessorId() {
+        return groupingProcessorId;
+    }
+
+    public void setGroupingProcessorId(String groupingProcessorId) {
+        this.groupingProcessorId = groupingProcessorId;
+    }
 }
