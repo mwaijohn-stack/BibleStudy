@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.biblestudy.R;
+import com.biblestudy.StudentAttendanceStatsActivity;
 
 import java.util.List;
 
@@ -75,12 +77,45 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
             holder.phone.setText("+"+item.getMsisdn());
             holder.position.setText(1 + position +".");
         }
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(context, StudentAttendanceStatsActivity.class);
+
+                intent.putExtra("student_id", item.getId());
+
+
+
+                intent.putExtra("campus_id", item.getCampusId());
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                context.startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
+
+//    @Override
+//    public void onClick(View v) {
+//        Intent intent  = new Intent(context, StudentAttendanceStatsActivity.class);
+//
+//
+//        Log.d("vclick","view clicked");
+//
+//        GroupMember groupMember = list.get(position);
+//        intent.putExtra("campus_id", groupMember.getCampusId());
+//        intent.putExtra("student_id", groupMember.getId());
+//
+//        context.startActivity(intent);
+//    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView position, phone, name;
@@ -90,6 +125,8 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
             name = (TextView) view.findViewById(R.id.name);
             phone = (TextView) view.findViewById(R.id.phone);
             position = (TextView) view.findViewById(R.id.position);
+
+
         }
     }
 }

@@ -25,6 +25,8 @@ public class SharedPref
     //IF USER IS A GROUP LEADER
     public static final String USER_ROLE = "USER_ROLE";
 
+    public static final String ATTENDANCE_WEEK = "ATTENDANCE_WEEK";
+
     public static final String STUDENT_ID = "STUDENT_ID";
 
     private SharedPref()

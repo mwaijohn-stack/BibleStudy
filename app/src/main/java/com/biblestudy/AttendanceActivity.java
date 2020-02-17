@@ -37,8 +37,21 @@ public class AttendanceActivity extends AppCompatActivity {
 
         btn_submit = findViewById(R.id.btn_submit);
 
-        week_number = findViewById(R.id.week_number);
-        week_number.setItems("Week 1", "Week 2", "Week 3", "Week 4", "Week 5");
+//        week_number = findViewById(R.id.week_number);
+//        week_number.setItems("Week 1", "Week 2", "Week 3", "Week 4", "Week 5");
+//
+//        SharedPref.write(SharedPref.ATTENDANCE_WEEK,"");
+//
+//
+//
+//        week_number.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+//                SharedPref.write(SharedPref.ATTENDANCE_WEEK,String.valueOf(position));
+//                Log.d("atweek",SharedPref.read(SharedPref.ATTENDANCE_WEEK,"sff"));
+//
+//            }
+//        });
 
         AttendanceAdapter membersAdapter = new AttendanceAdapter(GroupMembersActivity.new_list, getApplicationContext());
 
@@ -64,7 +77,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                             Log.d("saved_attendance","student " + attendanceRequest.getStudentId() + " saved");
                             Log.d("saved_attendance","student " + response.code() + " saved");
-
+                            Log.d("saved_attendance","student " + response.message() + " saved");
                         }
 
                         @Override

@@ -19,6 +19,7 @@ import java.util.List;
 
 import models.AttendanceRequest;
 import models.GroupMember;
+
 public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.MyViewHolder> {
 
         public static HashMap<String,AttendanceRequest> attendanceRequests = new HashMap<>();
@@ -42,34 +43,49 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.M
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-                GroupMember item =  list.get(position);
 
-                holder.name.setText(item.getFirstName() +" " + item.getLastName());
-                holder.position.setText(1 + position +".");
+            GroupMember item =  list.get(position);
+
+            holder.name.setText(item.getFirstName() +" " + item.getLastName());
+            holder.position.setText(1 + position +".");
+            holder.checkBox.setChecked(false);
+
+            holder.name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("campuu",item.getCampusId());
+                }
+            });
 
 
-                AttendanceRequest ATDR = new AttendanceRequest(item.getId(), item.getGroupName(),
-                        item.getGroupingProcessorId(), "1", "7",
-                        "0", item.getCampusId());
+            Log.d("campusid",item.getCampusId());
+
+            AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),
+                    Integer.parseInt(item.getGroupingProcessorId()),
+                    Integer.parseInt(item.getCampusId()), 1,
+                    7,
+                    0, Integer.parseInt(item.getGroupName()));
 
                 attendanceRequests.put(item.getId(),ATDR);
 
                 holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                        @Override
                        public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                           if (isChecked){
-                               //Log.d("checkb","checked button");
 
-                               AttendanceRequest ATDR = new AttendanceRequest(item.getId(), item.getGroupName(),
-                                       item.getGroupingProcessorId(), "1", "7",
-                                       "1", item.getCampusId());
+                           if (isChecked){
+
+                               AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),Integer.parseInt(item.getCampusId()),
+                                       Integer.parseInt(item.getGroupingProcessorId()), 1,
+                                       7,
+                                       1, Integer.parseInt(item.getGroupName()));
 
                                attendanceRequests.put(item.getId(),ATDR);
                            }else {
 
-                               AttendanceRequest ATDR = new AttendanceRequest(item.getId(), item.getGroupName(),
-                                       item.getGroupingProcessorId(), "1", "7",
-                                       "0", item.getCampusId());
+                               AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),Integer.parseInt(item.getCampusId()),
+                                       Integer.parseInt(item.getGroupingProcessorId()), 1,
+                                       7,
+                                       0, Integer.parseInt(item.getGroupName()));
 
                                attendanceRequests.put(item.getId(),ATDR);
                            }
@@ -77,9 +93,21 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.M
                    }
                 );
         }
+
         @Override
         public int getItemCount() {
                 return list.size();
+        }
+
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
