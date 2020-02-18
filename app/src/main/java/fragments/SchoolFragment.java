@@ -35,6 +35,7 @@ import java.util.Map;
 
 import interfaces.HostelService;
 import interfaces.UniversityService;
+import models.HostelRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -144,7 +145,6 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                     Log.d("campuses__",String.valueOf(campuses.length()));
 
 
-
                     for (int i=0;i<campuses.length();i++){
                         JSONObject campuses_object = campuses.getJSONObject(i);
                         my_campuses.add(campuses_object.getString("name"));
@@ -173,9 +173,9 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                 campus_id[0] = schools_objects.getString("id");
                                 Log.d("campus_id", campus_id[0]);
 
-
+                                HostelRequest hostelRequest = new HostelRequest(campus_id[0]);
                                 HostelService service = RetrofitClientInstance.getRetrofitInstance().create(HostelService.class);
-                                Call<JsonElement> call = service.getHostelsResponse(campus_id[0]);
+                                Call<JsonElement> call = service.getHostelsResponse(hostelRequest);
                                 call.enqueue(new Callback<JsonElement>() {
                                     @Override
                                     public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
@@ -192,8 +192,26 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                                                   JSONObject jsonObject1 = hostel_array.getJSONObject(i);
                                                   hostel_name.add(jsonObject1.getString("name"));
                                               }
+
                                               String[] arr = hostel_name.toArray(new String[hostel_name.size()]);
+
+                                              Log.d("hostels",arr.toString());
                                               hostel.setItems(arr);
+
+
+                                              hostel.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+                                                  @Override
+                                                  public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                                                      JSONObject jsonObject1 = null;
+                                                      try {
+                                                          jsonObject1 = hostel_array.getJSONObject(position);
+                                                          SharedPref.write(SharedPref.HOSTEL_ID,jsonObject1.getString("id"));
+                                                      } catch (JSONException e) {
+                                                          e.printStackTrace();
+                                                      }
+                                                      ;
+                                                  }
+                                              });
                                             }else {
                                                 Log.d("hostels","no hostels");
                                             }
@@ -206,6 +224,7 @@ public class SchoolFragment extends Fragment implements BlockingStep {
 
                                     @Override
                                     public void onFailure(Call<JsonElement> call, Throwable t) {
+                                        Log.d("hostels",t.getMessage() +"---");
 
                                     }
                                 });

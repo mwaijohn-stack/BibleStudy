@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -23,12 +25,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import utilities.RetrofitClientInstance;
 import utilities.SimpleDividerItemDecoration;
+import utilities.Utils;
 
 import static adapters.AttendanceAdapter.attendanceRequests;
 
 public class AttendanceActivity extends AppCompatActivity {
-    MaterialSpinner week_number;
     AppCompatButton btn_submit;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +39,9 @@ public class AttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_attendance);
 
         btn_submit = findViewById(R.id.btn_submit);
+        progressBar = findViewById(R.id.progress);
 
-//        week_number = findViewById(R.id.week_number);
-//        week_number.setItems("Week 1", "Week 2", "Week 3", "Week 4", "Week 5");
-//
-//        SharedPref.write(SharedPref.ATTENDANCE_WEEK,"");
-//
-//
-//
-//        week_number.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-//                SharedPref.write(SharedPref.ATTENDANCE_WEEK,String.valueOf(position));
-//                Log.d("atweek",SharedPref.read(SharedPref.ATTENDANCE_WEEK,"sff"));
-//
-//            }
-//        });
+        android.app.ProgressDialog progress = Utils.progress(AttendanceActivity.this,"Authenticating");
 
         AttendanceAdapter membersAdapter = new AttendanceAdapter(GroupMembersActivity.new_list, getApplicationContext());
 
@@ -63,12 +53,17 @@ public class AttendanceActivity extends AppCompatActivity {
         recyclerView.setAdapter(membersAdapter);
 
 
+
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+
                 AttendanceService service = RetrofitClientInstance.getRetrofitInstance().create(AttendanceService.class);
 
+                Utils.progress(getApplicationContext(),"Updating attendance").show();
                 for (Map.Entry<String, AttendanceRequest> entry : attendanceRequests.entrySet()) {
+
                     AttendanceRequest attendanceRequest = entry.getValue();
                     Call<JsonElement> call = service.createAttendnce(attendanceRequest);
 
@@ -89,6 +84,9 @@ public class AttendanceActivity extends AppCompatActivity {
                     });
 
                 }
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(AttendanceActivity.this, "Attendance updated", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }

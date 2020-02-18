@@ -2,20 +2,17 @@ package interfaces;
 
 import com.google.gson.JsonElement;
 
-
+import models.HostelRequest;
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Body;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
-
 
 public interface HostelService {
 
-//    @GET("hostel/all")
-//    Call<JsonElement> getHostelsResponse(@QueryMap Map<String, String> options);
 
-    @FormUrlEncoded
-    @POST("hostel/all")
-    Call<JsonElement> getHostelsResponse(@Field("id") String id);
+    @POST("hostels/list")
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> getHostelsResponse(@Body HostelRequest hostelRequest);
 
 }

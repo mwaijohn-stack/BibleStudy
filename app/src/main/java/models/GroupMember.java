@@ -47,10 +47,20 @@ public class GroupMember{
     @SerializedName("grouping_processor_id")
     @Expose
     private  String groupingProcessorId;
-
     @SerializedName("role")
     @Expose
     private String role;
+
+    private boolean isSelected = false;
+
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getRole() {
         return role;

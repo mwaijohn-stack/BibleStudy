@@ -7,31 +7,24 @@ import android.os.Bundle;
 import android.util.Log;
 
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import interfaces.StudentStatsService;
-import models.AttendanceRequest;
 import models.StatsRequest;
 import models.StatsResponseModel;
 import retrofit2.Call;
@@ -41,10 +34,15 @@ import utilities.RetrofitClientInstance;
 
 public class StudentAttendanceStatsActivity extends AppCompatActivity {
 
+    PieChart pieChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_attendance_stats);
+
+        pieChart = findViewById(R.id.py_chart);
+
 
         //student data from groupmembers activity
         String campus_id = getIntent().getStringExtra("campus_id");
@@ -52,6 +50,8 @@ public class StudentAttendanceStatsActivity extends AppCompatActivity {
 
         Log.d("data",campus_id +"campus_id");
         Log.d("data",student_id +"student_id");
+
+        //drawPieChart(25f,32f);
 
 
         StatsRequest statsRequest = new StatsRequest(student_id,campus_id);
@@ -75,19 +75,22 @@ public class StudentAttendanceStatsActivity extends AppCompatActivity {
                         StatsResponseModel stats = gson.fromJson(String.valueOf(jsonObject1), type);
 
                         Log.d("attended",stats.getAttendedWeeks());
-                        Log.d("attended",stats.getWeeks());
+                        Log.d("attended_tot",stats.getWeeks());
 
-                        Float attended = Float.parseFloat(stats.getAttendedWeeks());
-                        Float missed = Float.parseFloat(stats.getWeeks()) - Float.parseFloat(stats.getAttendedWeeks());;
+                        int attended = Integer.parseInt(stats.getAttendedWeeks());
+                        int missed = Integer.parseInt(stats.getWeeks()) - Integer.parseInt(stats.getAttendedWeeks());;
 
                         drawPieChart(attended,missed);
+                        //drawPieChart(25f,32f);
 
+                        Log.d("fvalue", String.valueOf(attended) +" " + missed);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
 
                         Log.d("exce",e.getMessage());
-                        drawPieChart(5f,95f);
+
+                        //drawPieChart(50,50);
 
                     }
 
@@ -105,21 +108,35 @@ public class StudentAttendanceStatsActivity extends AppCompatActivity {
         });
     }
 
-    public void drawPieChart(Float dim1,Float dim2){
+    public void drawPieChart(int attended,int missed){
 
-        PieChart pieChart = findViewById(R.id.py_chart);
+
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(true);
         pieChart.setExtraOffsets(5,10,5,5);
         pieChart.setDragDecelerationEnabled(true);
+
+        //set speed of deceleration increase the coefficient for a smooth deceleration
         pieChart.setDragDecelerationFrictionCoef(0.85f);
+        //set the center hole can also set the color
         pieChart.setDrawHoleEnabled(true);
 
+        Description description = new Description();
+        description.setText("Attendance History");
+        description.setTextSize(25f);
+
+        pieChart.setDescription(description);
+
+        //animate
+        pieChart.animateY(1000);
+
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(dim1,"Attended"));
-        pieEntries.add(new PieEntry(dim2,"Not attended"));
+        pieEntries.add(new PieEntry(attended,"Attended"));
+        pieEntries.add(new PieEntry(missed,"Not attended"));
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries,"Attendance");
+
+        //add and reduce the space between pies
         pieDataSet.setSliceSpace(3f);
         pieDataSet.setSelectionShift(5f);
         pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);

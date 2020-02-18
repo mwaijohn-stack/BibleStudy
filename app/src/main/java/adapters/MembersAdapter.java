@@ -95,6 +95,23 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
             }
         });
 
+        holder.phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(context, StudentAttendanceStatsActivity.class);
+
+                intent.putExtra("student_id", item.getId());
+
+
+
+                intent.putExtra("campus_id", item.getCampusId());
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                context.startActivity(intent);
+            }
+        });
+
 
     }
 
