@@ -1,5 +1,8 @@
 package utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -12,12 +15,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
-//    private static final String BASE_URL = "https://bible.wasiliana.co.ke/";
-   private static final String BASE_URL = "http://192.168.1.250/bible-study-api/";
-   // private static final String BASE_URL = "http://192.168.42.94/bible-study-api/";
+    //private static final String BASE_URL = "https://bible.wasiliana.co.ke/";
+   //private static final String BASE_URL = "http://192.168.1.250/bible-study-api/";
+    private static final String BASE_URL = "https://bsv1.wasiliana.co.ke/";
 
     //private static final String BASE_URL = "http:///10.0.2.2/";
-//192.168.42.94
+
+
+
     public static Retrofit getRetrofitInstance() {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -37,6 +42,11 @@ public class RetrofitClientInstance {
         });
 
         OkHttpClient okHttpClient = httpClient.build();
+
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()

@@ -11,6 +11,5 @@ public class Utils {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage(massage);
         return progressDialog;
-
     }
 }

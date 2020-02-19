@@ -12,8 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AttendanceActivity"
-            android:parentActivityName=".GroupMembersActivity"/>
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".RegisterBibleStudyActivity" />
+        <activity
+            android:name=".StudentAttendanceStatsActivity"
+            android:parentActivityName=".GroupMembersActivity" />
+        <activity
+            android:name=".AttendanceActivity"
+            android:parentActivityName=".GroupMembersActivity" />
         <activity android:name=".GroupMembersActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">

@@ -27,13 +27,13 @@ import utilities.SharedPref;
 public class RegisterActivity extends AppCompatActivity implements SchoolData {
     private StepperLayout mStepperLayout;
     public ArrayList<String> universities = new ArrayList<>();
-    public Map<Integer, JSONArray> all_campuses = new HashMap<Integer, JSONArray>();
-    public Map<Integer, Map<String, JSONArray>> all_schools = new HashMap<Integer, Map<String, JSONArray>>();
-    public Map<String,Map<String,JSONArray>> courses = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        setTitle("Sign Up");
 
         mStepperLayout =  findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(), this));

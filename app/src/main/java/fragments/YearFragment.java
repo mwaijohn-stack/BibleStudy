@@ -2,6 +2,7 @@ package fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -13,7 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.biblestudy.MainActivity;
 import com.biblestudy.R;
 import com.google.gson.JsonElement;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -30,8 +33,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import interfaces.BSRegistrationStatusService;
 import interfaces.CountyService;
 import interfaces.RegisterService;
+import models.IsRegisteredRequest;
 import models.Registration;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -174,6 +179,7 @@ public class YearFragment extends Fragment implements BlockingStep {
         String room_no = SharedPref.read(SharedPref.ROOM_NUMBER,null);
         String year_of_study = SharedPref.read(SharedPref.YEAR_OF_STUDY,null);
         String county_id = SharedPref.read(SharedPref.COUNTY_ID,null);
+        //String hostel_id = SharedPref.read(SharedPref.HOSTEL_ID,null);
 
 
         Log.d("first_name",first_name +"=" + middle_name +"=" + last_name +"=" +
@@ -182,13 +188,15 @@ public class YearFragment extends Fragment implements BlockingStep {
         Registration registration = new Registration(first_name,middle_name,last_name,
                 msisdn,gender,county_id,campus_id,registration_no,
                 course_id,hostel_id,"zone",
-                "hostel name",room_no,"2",year_of_study);
+                "hostel name",room_no,hostel_id,year_of_study);
 
         RegisterService service = RetrofitClientInstance.getRetrofitInstance().create(RegisterService.class);
         Call<JsonElement> call = service.registerStudent(registration);
 
-
         Log.d("completed","year fragment complete");
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -197,14 +205,18 @@ public class YearFragment extends Fragment implements BlockingStep {
                     Log.d("registration",response.body().toString());
                 }
                 Log.d("registration", String.valueOf(response.code()));
+                Toast.makeText(getContext(), "Registration successful", Toast.LENGTH_LONG).show();
+                startActivity(intent);
+
             }
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
                 Log.d("registration",t.getMessage());
+                Toast.makeText(getContext(), "Failed to register", Toast.LENGTH_LONG).show();
+                startActivity(intent);
             }
         });
-
     }
 
     @Override

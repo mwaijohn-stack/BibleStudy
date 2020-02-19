@@ -56,10 +56,14 @@ public class GroupMembersActivity extends AppCompatActivity {
         StatusService service = RetrofitClientInstance.getRetrofitInstance().create(StatusService.class);
         Call<JsonElement> call = service.getStatusResponse(statusRequest);
 
+        Log.d("student_id",SharedPref.read(SharedPref.STUDENT_ID,"0"));
+
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
 
+                Log.d("response__",response.body().toString());
+                Log.d("response__", String.valueOf(response.code()));
                 if (response.code() == 200){
                     Log.d("success",response.body().toString());
                 }
@@ -95,6 +99,8 @@ public class GroupMembersActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+
+                    Log.d("failed_to","failed to get group members");
                 }
 
 
