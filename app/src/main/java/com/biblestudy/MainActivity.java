@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("Login to Bible Study");
+
         phone_no = findViewById(R.id.phone_no);
         reg_no = findViewById(R.id.reg_no);
         btn_login  = findViewById(R.id.btn_login);
@@ -67,23 +69,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         phone_no.setError("Wrong number or password");
                         Toast.makeText(MainActivity.this, "WRONG DETAILS ENTERED!!!!",Toast.LENGTH_LONG).show();
 
-                    }else if(response.code() == 200){
+                    }else if(response.code() == 421){
+                        phone_no.setError("Enter all fields");
+                       // Toast.makeText(MainActivity.this, "WRONG DETAILS ENTERED!!!!",Toast.LENGTH_LONG).show();
+                    }
+
+                    else if(response.code() == 200){
 
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         JSONObject jsonObject2  = jsonObject.getJSONObject("message");
                         //JSONArray HGH =  jsonObject.getJSONArray("massage");
 
                         if(jsonObject.has("message")){
-                            Toast.makeText(MainActivity.this, "has massage", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(MainActivity.this, jsonObject2.getString("first_name"), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(MainActivity.this, "has massage", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivity.this, jsonObject2.getString("first_name"), Toast.LENGTH_SHORT).show();
 
                            // SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
                             SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
+
+                            Log.d("student__",SharedPref.read(SharedPref.STUDENT_ID,"0"));
                         }else {
                             Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                         }
 
-                        Toast.makeText(MainActivity.this, "LOGGED IN!!!!",Toast.LENGTH_LONG).show();
+//                        IsRegisteredRequest isRegisteredRequest = new IsRegisteredRequest(SharedPref.read(SharedPref.STUDENT_ID,"0"),
+//                                jsonObject2.getString("campus_id"));
+//                        BSRegistrationStatusService service = RetrofitClientInstance.getRetrofitInstance().create(BSRegistrationStatusService.class);
+//                        Call<JsonElement> call_status = service.getRegistrationStatus(isRegisteredRequest);
+//
+//                        call_status.enqueue(new Callback<JsonElement>() {
+//                            @Override
+//                            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+//                                try {
+//                                    JSONObject jsonObject = new JSONObject(response.body().toString());
+//
+//                                    if (jsonObject.getString("status") == String.valueOf(1)){
+//                                        Log.d("active","STUDENT IS REGISTERED");
+//                                    }else {
+//                                        Log.d("active","STUDENT NOT REGISTERED");
+//                                    }
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//
+//                                    Log.d("active",e.getMessage());
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<JsonElement> call, Throwable t) {
+//
+//                            }
+//                        });
+
+                        //Toast.makeText(MainActivity.this, "LOGGED IN!!!!",Toast.LENGTH_LONG).show();
                         startActivity(new Intent(MainActivity.this, GroupMembersActivity.class));
                     }
                     progress.dismiss();

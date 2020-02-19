@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.biblestudy.R;
 import com.biblestudy.RegisterActivity;
@@ -119,8 +118,6 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                     Log.d("massage",e.getMessage());
                 }
 
-
-
             }
 
             @Override
@@ -153,7 +150,7 @@ public class SchoolFragment extends Fragment implements BlockingStep {
                     String[] arr = my_campuses.toArray(new String[my_campuses.size()]);
                     //campus.setItems(arr);
 
-                    Toast.makeText(getActivity(), "hghgh", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "hghgh", Toast.LENGTH_SHORT).show();
 
                     campus.post(new Runnable() {
                         @Override

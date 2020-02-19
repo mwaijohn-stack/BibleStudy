@@ -78,7 +78,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<JsonElement> call, Throwable t) {
 
-                            Log.d("saved_attendance","student " + attendanceRequest.getStudentId() + " failed to saved");
+                            Log.d("saved_attendance",t.getMessage()  + " failed to saved");
 
                         }
                     });

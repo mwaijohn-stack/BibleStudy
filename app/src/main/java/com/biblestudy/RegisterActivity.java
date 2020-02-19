@@ -28,11 +28,12 @@ public class RegisterActivity extends AppCompatActivity implements SchoolData {
     private StepperLayout mStepperLayout;
     public ArrayList<String> universities = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        setTitle("Sign Up");
 
         mStepperLayout =  findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(), this));

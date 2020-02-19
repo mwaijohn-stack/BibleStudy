@@ -33,8 +33,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import interfaces.BSRegistrationStatusService;
 import interfaces.CountyService;
 import interfaces.RegisterService;
+import models.IsRegisteredRequest;
 import models.Registration;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -205,6 +207,7 @@ public class YearFragment extends Fragment implements BlockingStep {
                 Log.d("registration", String.valueOf(response.code()));
                 Toast.makeText(getContext(), "Registration successful", Toast.LENGTH_LONG).show();
                 startActivity(intent);
+
             }
 
             @Override
