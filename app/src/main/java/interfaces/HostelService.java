@@ -10,7 +10,6 @@ import retrofit2.http.POST;
 
 public interface HostelService {
 
-
     @POST("hostels/list")
     @Headers("Content-Type: application/json")
     Call<JsonElement> getHostelsResponse(@Body HostelRequest hostelRequest);

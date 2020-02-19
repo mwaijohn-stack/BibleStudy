@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(MainActivity.this, "WRONG DETAILS ENTERED!!!!",Toast.LENGTH_LONG).show();
 
                     }else if(response.code() == 200){
+
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         JSONObject jsonObject2  = jsonObject.getJSONObject("message");
                         //JSONArray HGH =  jsonObject.getJSONArray("massage");
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(MainActivity.this, "has massage", Toast.LENGTH_SHORT).show();
                             Toast.makeText(MainActivity.this, jsonObject2.getString("first_name"), Toast.LENGTH_SHORT).show();
 
+                           // SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
                             SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
                         }else {
                             Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();

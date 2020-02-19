@@ -71,12 +71,14 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
             holder.phone.setTextColor(context.getResources().getColor(R.color.colorAccent));
             holder.position.setText(1 + position +".");
             holder.position.setTextColor(context.getResources().getColor(R.color.colorAccent));
+
         }else {
 
             holder.name.setText(item.getFirstName() +" " + item.getLastName());
             holder.phone.setText("+"+item.getMsisdn());
             holder.position.setText(1 + position +".");
         }
+
 
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +96,7 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
                 context.startActivity(intent);
             }
         });
+
 
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
