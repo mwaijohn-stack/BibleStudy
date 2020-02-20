@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 
 import com.github.mikephil.charting.animation.Easing;
@@ -147,5 +150,29 @@ public class StudentAttendanceStatsActivity extends AppCompatActivity {
         pieData.setValueTextColor(Color.YELLOW);
 
         pieChart.setData(pieData);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_logout:
+
+                finish();
+
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }

@@ -16,7 +16,9 @@ import com.google.gson.JsonElement;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import interfaces.BSRegistrationStatusService;
 import interfaces.LoginService;
+import models.IsRegisteredRequest;
 import models.LoginRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,45 +88,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                            // SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
                             SharedPref.write(SharedPref.STUDENT_ID,jsonObject2.getString("id"));
+                            SharedPref.write(SharedPref.CAMPUS_ID,jsonObject2.getString("campus_id"));
 
                             Log.d("student__",SharedPref.read(SharedPref.STUDENT_ID,"0"));
                         }else {
                             Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                         }
 
-//                        IsRegisteredRequest isRegisteredRequest = new IsRegisteredRequest(SharedPref.read(SharedPref.STUDENT_ID,"0"),
-//                                jsonObject2.getString("campus_id"));
-//                        BSRegistrationStatusService service = RetrofitClientInstance.getRetrofitInstance().create(BSRegistrationStatusService.class);
-//                        Call<JsonElement> call_status = service.getRegistrationStatus(isRegisteredRequest);
-//
-//                        call_status.enqueue(new Callback<JsonElement>() {
-//                            @Override
-//                            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-//                                try {
-//                                    JSONObject jsonObject = new JSONObject(response.body().toString());
-//
-//                                    if (jsonObject.getString("status") == String.valueOf(1)){
-//                                        Log.d("active","STUDENT IS REGISTERED");
-//                                    }else {
-//                                        Log.d("active","STUDENT NOT REGISTERED");
-//                                    }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//
-//                                    Log.d("active",e.getMessage());
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<JsonElement> call, Throwable t) {
-//
-//                            }
-//                        });
+                        IsRegisteredRequest isRegisteredRequest = new IsRegisteredRequest(SharedPref.read(SharedPref.STUDENT_ID,"0"),
+                                jsonObject2.getString("campus_id"));
 
-                        //Toast.makeText(MainActivity.this, "LOGGED IN!!!!",Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(MainActivity.this, GroupMembersActivity.class));
+                        //IsRegisteredRequest isRegisteredRequest = new IsRegisteredRequest("872","6");
+
+                        BSRegistrationStatusService service = RetrofitClientInstance.getRetrofitInstance().create(BSRegistrationStatusService.class);
+                        Call<JsonElement> call_status = service.getRegistrationStatus(isRegisteredRequest);
+
+                        call_status.enqueue(new Callback<JsonElement>() {
+                            @Override
+                            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.body().toString());
+
+                                    //jsonObject.getJSONObject("massage").getString("status")
+
+                                    Log.d("active",jsonObject.getString("status"));
+
+                                    if (jsonObject.getJSONObject("message").getString("status") == String.valueOf(1)){
+                                        Log.d("active","STUDENT IS REGISTERED");
+                                        startActivity(new Intent(MainActivity.this,HomeActivity.class));
+                                    }else {
+                                        startActivity(new Intent(MainActivity.this,RegisterBibleStudyActivity.class));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+
+                                    Log.d("active",e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                            }
+                        });
+                        //startActivity(new Intent(MainActivity.this, RegisterBibleStudyActivity.class));
                     }
                     progress.dismiss();
+                    //finish();
                 } catch (JSONException e) {
                     //e.printStackTrace();
                     Toast.makeText(MainActivity.this, e.getMessage(),Toast.LENGTH_SHORT).show();

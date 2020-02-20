@@ -47,13 +47,13 @@ public class MembersAdapter  extends RecyclerView.Adapter<MembersAdapter.MyViewH
 
         if (position == 1){
             SharedPref.write(SharedPref.GROUP_NAME,item.getGroupName());
-            Log.d("group_name",item.getGroupName());
+            //Log.d("group_name",item.getGroupName());
         }
 
 
         String user_id = SharedPref.read(SharedPref.STUDENT_ID,"0");
-        Log.d("user_id",user_id);
-        Log.d("user_id_",item.getId());
+        //Log.d("user_id",user_id);
+        //Log.d("user_id_",item.getId());
 
         if (user_id.equals(item.getId())){
             if (item.getRole().equals("1")){

@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -117,5 +120,29 @@ public class GroupMembersActivity extends AppCompatActivity {
     public void createAttendance(View view){
         //Snackbar.make(view,"Create attendance",Snackbar.LENGTH_SHORT).show();
         startActivity(new Intent(this,AttendanceActivity.class));
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_logout:
+
+                finish();
+
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }
