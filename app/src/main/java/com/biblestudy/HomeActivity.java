@@ -18,18 +18,18 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        btn_register_bs = findViewById(R.id.btn_registerbs);
-        btn_view_attendance = findViewById(R.id.btn_view_attendance);
+       // btn_register_bs = findViewById(R.id.btn_registerbs);
+       btn_view_attendance = findViewById(R.id.btn_view_attendance);
         btn_view_group_members = findViewById(R.id.btn_view_members);
 
         setTitle("Home");
 
-        btn_register_bs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this,RegisterBibleStudyActivity.class));
-            }
-        });
+//        btn_register_bs.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(HomeActivity.this,RegisterBibleStudyActivity.class));
+//            }
+//        });
 
         btn_view_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,17 +49,18 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_menu, menu);
+        inflater.inflate(R.menu.action_home_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // action with ID action_refresh was selected
             case R.id.action_logout:
-
                 finish();
+                break;
+            case R.id.action_update:
+                startActivity(new Intent(HomeActivity.this, UpdateStudentDetails.class));
 
                 break;
             default:

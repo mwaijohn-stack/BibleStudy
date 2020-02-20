@@ -10,18 +10,18 @@
     tools:context=".HomeActivity">
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_registerbs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:padding="12dp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:background="@drawable/roundbutton"
-        android:textColor="@color/ms_white"
-        android:text="Register for Bible Study"/>
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/btn_registerbs"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:layout_marginBottom="24dp"-->
+<!--        android:padding="12dp"-->
+<!--        android:layout_marginLeft="20sp"-->
+<!--        android:layout_marginRight="20sp"-->
+<!--        android:background="@drawable/roundbutton"-->
+<!--        android:textColor="@color/ms_white"-->
+<!--        android:text="Register for Bible Study"/>-->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_view_attendance"

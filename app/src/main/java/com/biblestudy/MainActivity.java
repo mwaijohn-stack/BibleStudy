@@ -54,12 +54,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void login(String phone, String reg_no){
 
+
         //LoginRequest loginRequest = new LoginRequest("254728433879","CD/19/12");
         LoginRequest loginRequest = new LoginRequest(phone,reg_no);
         LoginService service = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
         Call<JsonElement> call = service.getLoginResponse(loginRequest);
         android.app.ProgressDialog progress = Utils.progress(MainActivity.this,"Authenticating");
         progress.show();
+
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {

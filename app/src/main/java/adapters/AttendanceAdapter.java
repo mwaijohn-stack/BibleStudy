@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.biblestudy.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import models.AttendanceRequest;
+import models.attendance.AttendanceRequest;
 import models.GroupMember;
 
 public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.MyViewHolder> {
@@ -84,9 +85,11 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.M
                 Integer.parseInt(item.getGroupingProcessorId()),
                 Integer.parseInt(item.getGroupName()), 1,
                 7,
-                0,Integer.parseInt(item.getCampusId()));
+                1,Integer.parseInt(item.getCampusId()));
 
             attendanceRequests.put(item.getId(),ATDR);
+
+            //list_attendance.add(ATDR);
 
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                    @Override
@@ -103,6 +106,8 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.M
                                    Integer.parseInt(item.getCampusId()));
                            holder.checkBox.setSelected(true);
                            attendanceRequests.put(item.getId(),ATDR);
+
+                           //list_attendance.remove()
                        }else {
 
                            AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),

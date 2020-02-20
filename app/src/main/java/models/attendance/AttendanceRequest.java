@@ -1,4 +1,4 @@
-package models;
+package models.attendance;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

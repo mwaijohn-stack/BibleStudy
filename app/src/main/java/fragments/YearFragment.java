@@ -52,7 +52,6 @@ public class YearFragment extends Fragment implements BlockingStep {
 
     HashMap<Integer,String> counties_map = new HashMap<>();
     MaterialSpinner counties_spinner,year_spinner;
-    SharedPreferences.Editor editor;
 
 
     public YearFragment() {
