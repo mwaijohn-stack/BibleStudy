@@ -7,31 +7,31 @@ public class AttendanceRequest {
 
     @SerializedName("student_id")
     @Expose
-    private Integer studentId;
+    private String studentId;
     @SerializedName("group_number")
     @Expose
-    private Integer groupNumber;
+    private String groupNumber;
     @SerializedName("grouping_processor_id")
     @Expose
-    private Integer groupingProcessorId;
+    private String groupingProcessorId;
 
     @SerializedName("academic_year_id")
     @Expose
-    private Integer academicYearId;
+    private String academicYearId;
     @SerializedName("week_number")
     @Expose
-    private Integer weekNumber;
+    private String weekNumber;
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("campus_id")
     @Expose
-    private Integer campusId;
+    private String campusId;
 
 
-    public AttendanceRequest(Integer studentId, Integer groupNumber,
-                             Integer groupingProcessorId, Integer academicYearId,
-                             Integer weekNumber, Integer status, Integer campusId) {
+    public AttendanceRequest(String studentId, String groupNumber,
+                             String groupingProcessorId, String academicYearId,
+                             String weekNumber, String status, String campusId) {
 
         this.studentId = studentId;
         this.groupNumber = groupNumber;
@@ -42,59 +42,59 @@ public class AttendanceRequest {
         this.campusId = campusId;
     }
 
-    public Integer getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Integer studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
-    public Integer getGroupNumber() {
+    public String getGroupNumber() {
         return groupNumber;
     }
 
-    public void setGroupNumber(Integer groupNumber) {
+    public void setGroupNumber(String groupNumber) {
         this.groupNumber = groupNumber;
     }
 
-    public Integer getGroupingProcessorId() {
+    public String getGroupingProcessorId() {
         return groupingProcessorId;
     }
 
-    public void setGroupingProcessorId(Integer groupingProcessorId) {
+    public void setGroupingProcessorId(String groupingProcessorId) {
         this.groupingProcessorId = groupingProcessorId;
     }
 
-    public Integer getAcademicYearId() {
+    public String getAcademicYearId() {
         return academicYearId;
     }
 
-    public void setAcademicYearId(Integer academicYearId) {
+    public void setAcademicYearId(String academicYearId) {
         this.academicYearId = academicYearId;
     }
 
-    public Integer getWeekNumber() {
+    public String getWeekNumber() {
         return weekNumber;
     }
 
-    public void setWeekNumber(Integer weekNumber) {
+    public void setWeekNumber(String weekNumber) {
         this.weekNumber = weekNumber;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Integer getCampusId() {
+    public String getCampusId() {
         return campusId;
     }
 
-    public void setCampusId(Integer campusId) {
+    public void setCampusId(String campusId) {
         this.campusId = campusId;
     }
 

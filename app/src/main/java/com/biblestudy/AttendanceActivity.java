@@ -105,7 +105,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<JsonElement> call, Throwable t) {
-                        Log.d("attendance_",t.getMessage());
+                        Log.d("attendance_x",t.getMessage());
                     }
                 });
 

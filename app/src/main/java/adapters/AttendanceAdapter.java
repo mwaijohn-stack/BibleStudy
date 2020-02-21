@@ -81,11 +81,11 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.M
 
         Log.d("campusid",item.getCampusId());
 
-        AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),
-                Integer.parseInt(item.getGroupingProcessorId()),
-                Integer.parseInt(item.getGroupName()), 1,
-                7,
-                1,Integer.parseInt(item.getCampusId()));
+        AttendanceRequest ATDR = new AttendanceRequest(item.getId(),
+                item.getGroupingProcessorId(),
+                item.getGroupName(), "1",
+                "7",
+                "1",item.getCampusId());
 
             attendanceRequests.put(item.getId(),ATDR);
 
@@ -97,26 +97,26 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.M
 
                        if (isChecked){
 
-                           AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),
-                                   Integer.parseInt(item.getGroupName()),
-                                   Integer.parseInt(item.getGroupingProcessorId()),
-                                   1,
-                                   7,
-                                   1,
-                                   Integer.parseInt(item.getCampusId()));
+                           AttendanceRequest ATDR = new AttendanceRequest(item.getId(),
+                                   item.getGroupName(),
+                                   item.getGroupingProcessorId(),
+                                   "1",
+                                   "7",
+                                   "1",
+                                   item.getCampusId());
                            holder.checkBox.setSelected(true);
                            attendanceRequests.put(item.getId(),ATDR);
 
                            //list_attendance.remove()
                        }else {
 
-                           AttendanceRequest ATDR = new AttendanceRequest(Integer.parseInt(item.getId()),
-                                  Integer.parseInt(item.getGroupName()),
-                                   Integer.parseInt(item.getGroupingProcessorId()),
-                                   1,
-                                   7,
-                                   0,
-                                   Integer.parseInt(item.getCampusId())
+                           AttendanceRequest ATDR = new AttendanceRequest(item.getId(),
+                                  item.getGroupName(),
+                                   item.getGroupingProcessorId(),
+                                   "1",
+                                   "7",
+                                   "0",
+                                   item.getCampusId()
                                    );
 
                            attendanceRequests.put(item.getId(),ATDR);
